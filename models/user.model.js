@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt')
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const SALT_WORK_FACTOR = 10
 
+require('./department.model')
+
 const userSchema = new Schema({
     user: { 
         type: String,
@@ -47,6 +49,10 @@ const userSchema = new Schema({
         required: true,
         enum: ['Activo', 'Bloqueado', 'Baja'],
         default: 'Activo'
+    },
+    department:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Department'
     }
 }, {
     timestamps: true,
@@ -84,6 +90,8 @@ userSchema.pre('save', function (next) {
   userSchema.methods.checkPassword = function (password) {
     return bcrypt.compare(password, this.password)
   }
+
+  
 
   const User = mongoose.model('User', userSchema)
 

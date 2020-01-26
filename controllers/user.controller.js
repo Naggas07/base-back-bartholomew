@@ -25,7 +25,8 @@ module.exports.login = (req, res, next) => {
     .then(user => {
         user.checkPassword(password)
         .then(match => {
-            (!match)? res.status(400).json({message: 'user invalid'}):
+            (!match)? 
+            res.status(400).json({message: 'user invalid'}):
             res.json(user)
         })
     })
